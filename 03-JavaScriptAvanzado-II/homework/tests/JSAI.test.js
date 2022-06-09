@@ -12,7 +12,7 @@ const {
 } = require('../homework');
 
 describe('counter', () => {
- it('should return a function', () => {
+  it('should return a function', () => {
    expect(typeof counter()).toBe('function');
  });
  it('should return 1 when the returned function is invoked', () => {

@@ -3,7 +3,6 @@
 function BinarioADecimal(num) {
   // tu codigo aca
 let numeroDecimal = 0;
-
 for (let i = 0; i < num.length; i++) {
   let posicion = num.length -1 -i;
   (2 ** posicion) * num[i]
