@@ -11,12 +11,65 @@ Implementar la clase LinkedList, definiendo los siguientes métodos:
   En caso de que la búsqueda no arroje resultados, search debe retornar null.
 */
 
-function LinkedList() {}
+function LinkedList() {
+  this.head = null;
+}
 
-function Node(value) {}
+LinkedList.prototype.add = function (value) {
+  const newNode = new Node(value);
+   if (!this.head) {
+      this.head = newNode;
+   } else { 
+      let current = this.head;
+      while (current.next) {
+       current = current.next;
+      } 
+      current.next = newNode;
+    }
+};
+LinkedList.prototype.remove = function () {
+  if (!this.head) return null;
+  if (!this.head.next){
+    const value = this.head.value;
+    this.head = null;
+    return value;
+  }
+  let current = this.head
+  while (current.next.next) {
+    current = current.next 
+  }
+  const value = current.next.value;
+  current.next = null;
+  return value;
+}
+LinkedList.prototype.search = function (valueOrCB) {
+  if (!this.head) return null;
+  if (typeof valueOrCB === "function") {
+    if (valueOrCB (this.head.value)) return this.head.value;
+  } else {
+    if (this.head.value === valueOrCB) return this.head.value;
+  }
+  let current = this.head;
+  while (current.next) {
+    current = current.next;
+    if (typeof valueOrCB === "function") {
+      if (valueOrCB (current.value)) return current.value;
+    } else {
+      if (current.value === valueOrCB) return current.value;
+    }
+  }
+  return null;
+   
+
+}
+ 
+function Node(value) {
+  this.value = value;
+  this.next = null;
+}
 
 /*
-Implementar la clase HashTable.
+Implementar la clase HashTable. 
 
 Nuetra tabla hash, internamente, consta de un arreglo de buckets (slots, contenedores, o casilleros; es decir, posiciones posibles para almacenar la información), donde guardaremos datos en formato clave-valor (por ejemplo, {instructora: 'Ani'}).
 Para este ejercicio, la tabla debe tener 35 buckets (numBuckets = 35). (Luego de haber pasado todos los tests, a modo de ejercicio adicional, pueden modificar un poco la clase para que reciba la cantidad de buckets por parámetro al momento de ser instanciada.)
@@ -30,7 +83,38 @@ La clase debe tener los siguientes métodos:
 Ejemplo: supongamos que quiero guardar {instructora: 'Ani'} en la tabla. Primero puedo chequear, con hasKey, si ya hay algo en la tabla con el nombre 'instructora'; luego, invocando set('instructora', 'Ani'), se almacenará el par clave-valor en un bucket específico (determinado al hashear la clave)
 */
 
-function HashTable() {}
+function HashTable(buckets) {
+  this.numBuckets = buckets || 35;
+  this.data = new Array(this.numBuckets );
+}
+HashTable.prototype.set = function(key , value){
+  if (typeof key !== "string") throw new TypeError("Key must be a string")
+  const bucket = this.hash(key);
+  if (!this.data[bucket]) {
+    this.data[bucket] ={}
+  }
+  this.data[bucket][key] = value;
+}
+HashTable.prototype.get = function(key){
+  const bucket = this.hash(key);
+  if(this.data[bucket]) return this.data[bucket][key];
+  return undefined;
+}
+HashTable.prototype.hasKey = function(key){
+  const bucket = this.hash(key);
+  if (this.data[bucket]) return this.data[bucket].hasOwnProperty(key);
+  return false;
+};
+HashTable.prototype.hash = function(key){
+  let code = 0;
+
+  for (let i = 0; i < key.length; i++) {
+    code += key.charCodeAt(i)
+    
+  }
+  return code % this.numBuckets;
+
+}
 
 // No modifiquen nada debajo de esta linea
 // --------------------------------

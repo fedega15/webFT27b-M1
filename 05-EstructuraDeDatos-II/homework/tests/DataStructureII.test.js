@@ -151,7 +151,7 @@ describe('HashTable', function() {
     expect(hashTable.get('this is a very different string')).toBe(44.4);
   });
 
-  it('deberia devolver un error cuando el key no es un string', function() {
+    it('deberia devolver un error cuando el key no es un string', function() {
     expect(function() {
       hashTable.set(false, 'hi');
     }).toThrowError(TypeError, 'Keys must be strings');
